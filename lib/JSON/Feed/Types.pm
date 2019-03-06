@@ -1,12 +1,20 @@
 package JSON::Feed::Types {
     use Type::Library -base;
     use Type::Utils -all;
-    use Types::Standard qw<Str Bool Dict Optional ArrayRef>;
+    use Types::Standard qw<Str Int Bool Dict Optional ArrayRef>;
+    use Types::Common::Numeric qw< PositiveOrZeroInt >;
 
     my $Author = declare JSONFeedAuthor => as Dict[
         name => Optional[Str],
         url => Optional[Str],
         avatar => Optional[Str],
+    ];
+
+    my $Attachment = declare JSONFeedAttachment => as Dict[
+        url => Str,
+        mime_type => Str,
+        title => Optional[Str],
+        size_in_bytes => Optional[PositiveOrZeroInt],
     ];
 
     my $Item = declare JSONFeedItem => as Dict[
@@ -22,6 +30,7 @@ package JSON::Feed::Types {
         date_published => Optional[Str],
         author => Optional[ $Author ],
         tags => Optional[ArrayRef[Str]],
+        attachments => Optional[ $Attachment ],
     ];
 
     declare JSONFeed => as Dict[
