@@ -7,6 +7,7 @@ steps:
     commands:
       - cpanm -q --notest --no-man-pages JSON Dist::Zilla Test2::Harness
       - dzil authordeps | cpanm
+      - dzil listdeps --missing | cpanm
       - yath --qvf
       - dzil test
       - dzil build
