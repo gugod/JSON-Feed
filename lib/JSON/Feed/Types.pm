@@ -1,10 +1,10 @@
 package JSON::Feed::Types {
     use Type::Library -base;
     use Type::Utils -all;
-    use Types::Standard qw<Str Int Bool Dict Optional ArrayRef>;
+    use Types::Standard qw<Str Int Bool Dict Optional ArrayRef HashRef>;
     use Types::Common::Numeric qw< PositiveOrZeroInt >;
 
-    my $Author = declare JSONFeedAuthor => as Dict[
+    my $AuthorWithoutExt = declare JSONFeedAuthorWithoutExt => as Dict[
         name => Optional[Str],
         url => Optional[Str],
         avatar => Optional[Str],
@@ -12,7 +12,13 @@ package JSON::Feed::Types {
         exists($_->{name}) || exists($_->{url}) || exists($_->{avatar})
     };
 
-    my $Attachment = declare JSONFeedAttachment => as Dict[
+    my $Author = declare JSONFeedAuthor => as HashRef, where {
+        my $val = $_;
+        my %o = map { $_ => $val->{$_} } grep { ! /^_/ } keys %$val;
+        $AuthorWithoutExt->check(\%o);
+    };
+
+    my $AttachmentWithoutExt = declare JSONFeedAttachmentWithoutExt => as Dict[
         url => Str,
         mime_type => Str,
         title => Optional[Str],
@@ -20,7 +26,13 @@ package JSON::Feed::Types {
         duration_in_seconds => Optional[PositiveOrZeroInt],
     ];
 
-    my $Item = declare JSONFeedItem => as Dict[
+    my $Attachment = declare JSONFeedAttachment => as HashRef, where {
+        my $val = $_;
+        my %o = map { $_ => $val->{$_} } grep { ! /^_/ } keys %$val;
+        $AttachmentWithoutExt->check(\%o);
+    };
+
+    my $ItemWithoutExt = declare JSONFeedItemWithoutExt => as Dict[
         id => Str,
         url => Optional[Str],
         external_url => Optional[Str],
@@ -37,7 +49,13 @@ package JSON::Feed::Types {
         attachments => Optional[ArrayRef[ $Attachment ]],
     ];
 
-    declare JSONFeed => as Dict[
+    my $Item = declare JSONFeedItem => as HashRef, where {
+        my $val = $_;
+        my %o = map { $_ => $val->{$_} } grep { ! /^_/ } keys %$val;
+        $ItemWithoutExt->check(\%o);
+    };
+
+    my $JSONFeedWithoutExt = declare JSONFeedWithoutExt => as Dict[
         version => Str,
         title => Str,
         description => Optional[Str],
@@ -52,6 +70,12 @@ package JSON::Feed::Types {
         hub => Optional[ArrayRef],
         items => ArrayRef[ $Item ],
     ];
+
+    declare JSONFeed => as HashRef, where {
+        my $val = $_;
+        my %o = map { $_ => $val->{$_} } grep { ! /^_/ } keys %$val;
+        $JSONFeedWithoutExt->check(\%o);
+    };
     
     __PACKAGE__->meta->make_immutable;
 };
