@@ -3,12 +3,27 @@ use strict;
 use warnings;
 use utf8;
 use Test2::V0;
+
+use FindBin '$Bin';
+use File::Spec;
+use File::Glob 'bsd_glob';
+
 use JSON qw<from_json>;
 use JSON::Feed::Types qw(JSONFeed);
 
 ok JSONFeed->check( from_json( json_example_1() ) );
 ok JSONFeed->check( from_json( json_example_2() ) );
 ok JSONFeed->check( from_json( json_example_3() ) );
+
+for my $f ( bsd_glob( File::Spec->catfile($Bin, 'data', '*.json') ) ) {
+    open my $fh, '<:utf8', $f;
+    local $/;
+    my $json = <$fh>;
+
+    ok JSONFeed->check( from_json($json) ), $f;
+
+    close($fh);
+}
 
 done_testing;
 
