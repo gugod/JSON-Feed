@@ -15,6 +15,7 @@ package JSON::Feed::Types {
         mime_type => Str,
         title => Optional[Str],
         size_in_bytes => Optional[PositiveOrZeroInt],
+        duration_in_seconds => Optional[PositiveOrZeroInt],
     ];
 
     my $Item = declare JSONFeedItem => as Dict[
@@ -30,7 +31,7 @@ package JSON::Feed::Types {
         date_published => Optional[Str],
         author => Optional[ $Author ],
         tags => Optional[ArrayRef[Str]],
-        attachments => Optional[ $Attachment ],
+        attachments => Optional[ArrayRef[ $Attachment ]],
     ];
 
     declare JSONFeed => as Dict[
