@@ -8,7 +8,9 @@ package JSON::Feed::Types {
         name => Optional[Str],
         url => Optional[Str],
         avatar => Optional[Str],
-    ];
+    ], where {
+        exists($_->{name}) || exists($_->{url}) || exists($_->{avatar})
+    };
 
     my $Attachment = declare JSONFeedAttachment => as Dict[
         url => Str,
