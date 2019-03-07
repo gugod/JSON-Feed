@@ -5,15 +5,12 @@ steps:
   - name: Test with perl 5.28.0
     image: perl:5.28.0
     commands:
-      - cpanm -q --notest --no-man-pages Dist::Zilla Test2::Harness
+      - cpanm -q --notest --no-man-pages JSON Dist::Zilla Test2::Harness
       - dzil authordeps | cpanm
       - yath --qvf
-
-  - name: Build Distribution
-    image: perl:5.28.0
-    commands:
       - dzil test
       - dzil build
+
   - name: Install Distribution
     image: perl:5.28.0
     commands:
