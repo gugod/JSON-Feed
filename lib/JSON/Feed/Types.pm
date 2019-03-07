@@ -29,6 +29,7 @@ package JSON::Feed::Types {
         image => Optional[Str],
         banner_image => Optional[Str],
         date_published => Optional[Str],
+        date_modified  => Optional[Str],
         author => Optional[ $Author ],
         tags => Optional[ArrayRef[Str]],
         attachments => Optional[ArrayRef[ $Attachment ]],

@@ -19,10 +19,15 @@ for my $f ( bsd_glob( File::Spec->catfile($Bin, 'data', '*.json') ) ) {
     open my $fh, '<:utf8', $f;
     local $/;
     my $json = <$fh>;
-
-    ok JSONFeed->check( from_json($json) ), $f;
-
     close($fh);
+    my $o = from_json($json);
+    
+    if (JSONFeed->check( $o )) {
+        pass $f;
+    } else {
+        diag JSONFeed->get_message( $o );
+        fail $f;
+    }
 }
 
 done_testing;
