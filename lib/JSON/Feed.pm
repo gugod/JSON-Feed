@@ -10,7 +10,19 @@ use JSON;
 
 use JSON::Feed::Types qw<JSONFeed>;
 
-has version => ( is => 'ro' );
+has version       => ( is => 'ro' );
+has title         => ( is => 'ro' );
+has description   => ( is => 'ro' );
+has user_comment  => ( is => 'ro' );
+has next_url      => ( is => 'ro' );
+has icon          => ( is => 'ro' );
+has favicon       => ( is => 'ro' );
+has author        => ( is => 'ro' );
+has home_page_url => ( is => 'ro' );
+has feed_url      => ( is => 'ro' );
+has expired_url   => ( is => 'ro' );
+has hub           => ( is => 'ro' );
+has items         => ( is => 'ro' );
 
 sub parse {
     my ($class, $o) = @_;
@@ -49,6 +61,7 @@ JSON::Feed->new
 Parsing:
 
     JSON::Feed->parse( '/path/feed.json' );
+    JSON::Feed->parse( $file_handle );
     JSON::Feed->parse( \$src );
 
 Generating:

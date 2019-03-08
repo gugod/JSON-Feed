@@ -7,6 +7,7 @@ use Test2::V0;
 use FindBin '$Bin';
 use File::Spec;
 use File::Glob 'bsd_glob';
+use Path::Tiny 'path';
 
 use JSON::Feed;
 
@@ -23,6 +24,12 @@ for my $f ( bsd_glob( File::Spec->catfile($Bin, 'data', '*.json') ) ) {
             is $feed->version, "https://jsonfeed.org/version/1";
             close($fh);
         }, "file handle";
+
+        ok lives {
+            my $content = path($f)->slurp;
+            my $feed = JSON::Feed->parse( \$content );
+            is $feed->version, "https://jsonfeed.org/version/1";
+        }, "content ref";
     };
 }
 
