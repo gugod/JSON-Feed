@@ -1,8 +1,42 @@
 package JSON::Feed;
 # ABSTRACT: An implementation of JSON Feed: https://jsonfeed.org/
-use strict;
-use warnings;
+use Moo;
+use namespace::clean;
 
+use Ref::Util qw< is_globref is_ioref is_scalarref >;
+use Path::Tiny qw< path >;
+use Try::Tiny;
+use JSON;
+
+use JSON::Feed::Types qw<JSONFeed>;
+
+has version => ( is => 'ro' );
+
+sub parse {
+    my ($class, $o) = @_;
+
+    my $data;
+    if (is_globref($o)) {
+        local $/;
+        my $content = <$o>;
+        if (utf8::is_utf8($content)) {
+            $data = from_json($content);
+        } else {
+            $data = decode_json($content);
+        }
+
+    } elsif (is_scalarref($o)) {
+        $data = decode_json($$o);
+    } elsif (-f $o) {
+        $data = decode_json(path($o)->slurp);
+    } else {
+        die "Unable to tell the type of argument";
+    }
+
+    JSONFeed->assert_valid($data);
+
+    return $class->new(%$data);
+}
 
 1;
 
