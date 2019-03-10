@@ -15,20 +15,20 @@ for my $f ( bsd_glob( File::Spec->catfile($Bin, 'data', '*.json') ) ) {
     subtest $f, sub {
         ok lives {
             my $feed = JSON::Feed->parse( $f );
-            is $feed->version, "https://jsonfeed.org/version/1";
+            is $feed->get('version'), "https://jsonfeed.org/version/1";
         }, "file name";
 
         ok lives {
             open my $fh, '<:utf8', $f;
             my $feed = JSON::Feed->parse( $fh );
-            is $feed->version, "https://jsonfeed.org/version/1";
+            is $feed->get('version'), "https://jsonfeed.org/version/1";
             close($fh);
         }, "file handle";
 
         ok lives {
             my $content = path($f)->slurp;
             my $feed = JSON::Feed->parse( \$content );
-            is $feed->version, "https://jsonfeed.org/version/1";
+            is $feed->get('version'), "https://jsonfeed.org/version/1";
         }, "content ref";
     };
 }

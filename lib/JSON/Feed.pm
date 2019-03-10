@@ -8,21 +8,37 @@ use Path::Tiny qw< path >;
 use Try::Tiny;
 use JSON;
 
-use JSON::Feed::Types qw<JSONFeed>;
+use JSON::Feed::Types qw<JSONFeed JSONFeedItem>;
 
-has version       => ( is => 'ro' );
-has title         => ( is => 'ro' );
-has description   => ( is => 'ro' );
-has user_comment  => ( is => 'ro' );
-has next_url      => ( is => 'ro' );
-has icon          => ( is => 'ro' );
-has favicon       => ( is => 'ro' );
-has author        => ( is => 'ro' );
-has home_page_url => ( is => 'ro' );
-has feed_url      => ( is => 'ro' );
-has expired_url   => ( is => 'ro' );
-has hub           => ( is => 'ro' );
-has items         => ( is => 'ro' );
+has feed => (
+    is => 'ro',
+    default => sub {
+        return +{
+            version => "https://jsonfeed.org/version/1",
+            title   => 'Untitle',
+            items   => [],
+        }
+    },
+    isa => JSONFeed,
+);
+
+around BUILDARGS => sub {
+    my ($orig, $class, %args) = @_;
+
+    if (exists $args{feed}) {
+        return $class->$orig(feed => \%args);
+    }
+
+    return +{
+        feed => +{
+            version => "https://jsonfeed.org/version/1",
+            title   => 'Unknown',
+            items   => [],
+
+            %args
+        }
+    }
+};
 
 sub parse {
     my ($class, $o) = @_;
@@ -47,7 +63,29 @@ sub parse {
 
     JSONFeed->assert_valid($data);
 
-    return $class->new(%$data);
+    return $class->new( %$data );
+}
+
+sub get {
+    my ($self, $attr_name) = @_;
+    return $self->feed->{$attr_name};
+}
+
+sub set {
+    my ($self, $attr_name, $v) = @_;
+    return $self->feed->{$attr_name} = $v;
+}
+
+sub add_item {
+    my ($self, %item) = @_;
+    my $item = \%item;
+    JSONFeedItem->assert_valid($item);
+    push @{ $self->feed->{items} }, $item;
+}
+
+sub to_string {
+    my ($self) = @_;
+    return to_json($self->feed);
 }
 
 1;
