@@ -48,7 +48,8 @@
             "Path::Tiny" : "0",
             "Ref::Util" : "0",
             "Try::Tiny" : "0",
-            "Type::Tiny" : "0"
+            "Type::Tiny" : "0",
+            "namespace::clean" : "0"
          }
       },
       "test" : {
