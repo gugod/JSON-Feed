@@ -91,14 +91,18 @@ sub add_item {
 
 sub to_string {
     my ($self) = @_;
-    return to_json( $self->feed );
+    my $feed = $self->feed;
+    if (exists $feed->{expired}) {
+        $feed->{expired} = $feed->{expired} ? JSON::true : JSON::false;
+    }
+    return to_json( $feed );
 }
 
 1;
 
-=head1 SYNOPSIS
+=head1 NAME
 
-JSON::Feed->new
+JSON::Feed - Syndication with JSON.
 
 =head1 SYNOPSIS
 
