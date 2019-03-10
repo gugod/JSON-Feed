@@ -5,11 +5,9 @@ steps:
   - name: Test with perl 5.28
     image: gugod/perl-testbox:5.28
     commands:
-      - dzil authordeps | cpanm
-      - dzil listdeps --missing | cpanm
+      - cpanm --installdeps .
       - yath --qvf
-      - dzil test
-      - dzil build
+      - minil dist
 
   - name: Install Distribution
     image: perl:5.28.0
