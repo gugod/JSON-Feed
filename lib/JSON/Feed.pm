@@ -114,6 +114,7 @@ Parsing:
 
 Generating:
 
+    # Initialize, with some content.
     my $feed = JSON::Feed->new(
         title    => "An example of JSON feed",
         feed_url => "https://example.com/feed.json",
@@ -133,8 +134,81 @@ Generating:
         ]
     );
 
+    # Mutate
+    $feed->set( description => 'Some description here.' );
+    $feed->add_item(
+        id => 789,
+        title => "Another URL-less item here",
+        summary => "Another item here. Lorem ipsum yatta yatta yatta.",
+    );
+
     # Output
     print $fh $feed->to_string;
+
+=head1 DESCRIPTION
+
+L<JSON Feed|https://jsonfeed.org/> is a simple format for website syndication
+with JSON, instead of XML.
+
+This module implements minimal amout of API for parsing and/or generating such
+feeds. The users of this module should glance over the jsonfeed spec in order
+to correctly generate a JSON::Feed.
+
+Here's a short but yet comprehensive Type mapping between jsonfeed spec and
+perl.
+
+    | jsonfeed | perl                       |
+    |----------+----------------------------|
+    | object   | HashRef                    |
+    | boolean  | JSON::true, or JSON::false |
+    | string   | Str                        |
+    | array    | ArrayRef                   |
+
+=head1 METHODS
+
+=over 4
+
+=item set( $attr, $value )
+
+The C<$attr> here must be a name from one top-level attribute
+from L<v1 spec|https://jsonfeed.org/version/1>.
+
+The passed C<$value> thus must be the corresponding value.
+
+Most of the values from spec are strings and that maps to a perl scalar veraible.
+The term `object` in the spec is mapped to a perl HashRef.
+
+Be aware that the spec allows feed extensions by prefixng attributes with
+underscore character. Thus, all strings begin with C<'_'> are valid. Whatever
+those extented attributes mapped to are left as-is.
+
+=item get( $attr )
+
+Retrieve the value of the given top-level varible.
+
+=item to_string()
+
+Stringify this JSON Feed. At this moment, the feed structure is checked and if
+it is invalid, an exception is thrown.
+
+=item parse( $file_name )
+
+Take C<$file_name> that should be a valid JSON feed, and build an object from
+it. Exception will be thrown if the input is not a valid JSON feed.
+
+=item parse( $file_handle )
+
+Take a pre-opened C<$file_handle> that should be a valid JSON feed and produce
+an object from it.  This slurps the rest of $file_handle but leave it open.
+Exception will be thrown if the input is not a valid JSON feed.
+
+=item parse( \$json_feed_text )
+
+Take a reference to a string that is assumed to be a valid json feed and
+produce an object from it. Exception will be thrown if the input is not a
+valid JSON feed.
+
+=back
 
 =head1 References
 
