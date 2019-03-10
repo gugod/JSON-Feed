@@ -1,7 +1,5 @@
 package JSON::Feed;
-
-# ABSTRACT: An implementation of JSON Feed: https://jsonfeed.org/
-
+our $VERSION = 0.001;
 use Moo;
 use namespace::clean;
 
@@ -218,3 +216,11 @@ valid JSON feed.
 =head1 References
 
 JSON Feed spec v1 L<https://jsonfeed.org/version/1>
+
+=head1 AUTHOR
+
+Kang-min Liu <gugod@gugod.org>
+
+=head1 LICENSE
+
+CC0
