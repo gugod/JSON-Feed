@@ -186,6 +186,11 @@ those extented attributes mapped to are left as-is.
 
 Retrieve the value of the given top-level varible.
 
+=item add_item( JSONFeedItem $item )
+
+Apend the given C<$item> to the C<items> attribute. The type of input C<$item>
+is described in the "Items" section of L<the spec|https://jsonfeed.org/version/1>.
+
 =item to_string()
 
 Stringify this JSON Feed. At this moment, the feed structure is checked and if
