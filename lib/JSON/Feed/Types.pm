@@ -81,3 +81,35 @@ package JSON::Feed::Types {
 };
 
 1;
+
+=head1 NAME
+
+JSON::Feed::Types - The Types for JSON::Feed package.
+
+=head1 SYNOPSIS
+
+    use JSON::Feed::Types;
+
+    JSONFeedAuthor->assert_validate( $obj1 );
+    JSONFeedAttachment->assert_validate( $obj2 );
+
+=head1 DESCRIPTION
+
+In this Type library, the following 4 types are defined and exported.
+
+=over 4
+
+=item JSONFeed
+
+=item JSONFeedItem
+
+=item JSONFeedAuthor
+
+=item JSONFeedAttachment
+
+=back
+
+These Types are object defined with L<Type::Tiny|https://metacpan.org/pod/Type::Tiny> and therefore
+have methods listed here: L<https://metacpan.org/pod/Type::Tiny#Methods>.
+
+Each type corresponds to an object defined in L<jsonfeed spec v1|https://jsonfeed.org/version/1>.
