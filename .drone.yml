@@ -5,11 +5,9 @@ steps:
   - name: Build
     image: gugod/perl-testbox:5.28
     commands:
-      - dzil authordeps | cpanm
-      - dzil listdeps --missing | cpanm
+      - cpanm --installdeps .
       - yath --qvf
-      - dzil test
-      - dzil build
+      - minil dist
 
   - &installation
     name: Install (perl 5.30)
