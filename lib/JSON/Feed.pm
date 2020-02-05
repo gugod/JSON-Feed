@@ -156,11 +156,14 @@ is described in the "Items" section of L<the spec|https://jsonfeed.org/version/1
 Stringify this JSON Feed. At this moment, the feed structure is checked and if
 it is invalid, an exception is thrown.
 
-=item from_string( $json_feed_text )
+=item from_string( $json_text )
 
 Take a reference to a string that is assumed to be a valid json feed and
 produce an object from it. Exception will be thrown if the input is not a
 valid JSON feed.
+
+This method is supposed to be consume the output of C<to_string> method
+without throwing exceptions.
 
 =back
 
