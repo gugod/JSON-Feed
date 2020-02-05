@@ -1,5 +1,5 @@
 package JSON::Feed;
-our $VERSION = 0.001;
+our $VERSION = '1.000';
 use Moo;
 use namespace::clean;
 use JSON qw<to_json from_json>;
