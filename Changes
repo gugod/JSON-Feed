@@ -1,5 +1,7 @@
 {{$NEXT}}
 
+1.001 2020-09-12T01:56:19Z
+
 	- Remove `parse` method
 	- Add `from_string` method
 
